@@ -20,7 +20,7 @@ jobs:
     - name: where are we
       run: pwd
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore ./FrontendBFF
     - name: Build
       run: dotnet build --no-restore
     - name: Test
