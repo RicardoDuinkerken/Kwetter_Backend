@@ -17,10 +17,10 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 5.0.x
-    - name: where are we
+    - name: check path
       run: pwd
     - name: Restore dependencies
-      run: dotnet restore ./FrontendBFF
+      run: dotnet restore ./src
     - name: Build
       run: dotnet build --no-restore
     - name: Test
