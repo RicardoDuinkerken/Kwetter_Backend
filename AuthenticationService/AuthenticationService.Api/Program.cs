@@ -1,4 +1,7 @@
 ﻿using System;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
+using Serilog;
 
 namespace AuthenticationService.Api
 {
@@ -6,7 +9,16 @@ namespace AuthenticationService.Api
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Log.Logger = new LoggerConfiguration()
+                .Enrich.FromLogContext()
+                .WriteTo.Console()
+                .CreateLogger();
+            CreateHostBuilder(args).Build().Run();  
         }
+        
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .UseSerilog()
+                .ConfigureWebHostDefaults(webBuilder => { webBuilder.UseStartup<Startup>(); });
     }
 }
