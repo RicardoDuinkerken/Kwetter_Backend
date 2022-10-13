@@ -20,8 +20,8 @@ jobs:
     - name: check path
       run: pwd
     - name: Restore dependencies
-      run: dotnet restore ./FrontendBFF
+      run: dotnet restore ./AuthenticationService
     - name: Build
-      run: dotnet build --no-restore ./FrontendBFF 
+      run: dotnet build --no-restore ./AuthenticationService 
     - name: Test
-      run: dotnet test --no-build --verbosity normal ./FrontendBFF
+      run: dotnet test --no-build --verbosity normal ./AuthenticationService 
