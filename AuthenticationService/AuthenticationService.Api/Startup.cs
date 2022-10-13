@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using AuthenticationService.Core.Services.Interfaces;
 using AuthenticationService.Dal;
 using AuthenticationService.Dal.Models;
@@ -30,11 +31,12 @@ namespace AuthenticationService.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            string server = Configuration.GetSection("Mysql").GetValue<string>("Server");
+            string server = Configuration.GetSection("MySql").GetValue<string>("Server");
             string username = Configuration.GetSection("Mysql").GetValue<string>("Username");
             string password = Configuration.GetSection("Mysql").GetValue<string>("Password");
             string database = Configuration.GetSection("Mysql").GetValue<string>("Database");
             string connectionString = $"server={server};user={username};password={password};database={database}";
+            
             services.AddDbContext<AuthenticationServiceContext>(builder =>
                 {
                     builder.UseLoggerFactory(new NullLoggerFactory());
