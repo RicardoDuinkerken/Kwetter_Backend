@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using AuthenticationService.Core.Exceptions;
 using AuthenticationService.Core.Services.Interfaces;
 using AuthenticationService.Dal.Models;
 using GenericDal;
@@ -43,7 +45,7 @@ namespace AuthenticationService.Core.Services
             if (account == null || !BC.Verify(password, account.Password))
             {
                 // authentication failed
-                //throw new FailedLoginAttemptException();
+                throw new FailedLoginAttemptException();
             }
             
             // authentication successful
@@ -60,9 +62,24 @@ namespace AuthenticationService.Core.Services
             return _tokenHandler.WriteToken(_tokenHandler.CreateToken(tokenDescriptor));
         }
 
-        public Task<bool> Register(string email, string password)
+        public async Task<bool> Register(string email, string password)
         {
-            throw new System.NotImplementedException();
+            List<Account> existingAccounts = await _accountRepository.GetWhereAsync(a => a.Email == email);
+            if (existingAccounts.Count > 0)
+            {
+                //email already used
+                throw new FailedRegisterAttemptException();
+            }
+
+            Account account = new()
+            {
+                Email = email,
+                Password = BC.HashPassword(password)
+            };
+
+            account = await _accountRepository.CreateAsync(account);
+            _logger.LogInformation("Account created with Id: {Id}", account.Id);
+            return true;
         }
     }
 }
