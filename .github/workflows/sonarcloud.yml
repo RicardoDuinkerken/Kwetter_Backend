@@ -5,7 +5,7 @@ on:
 jobs:
   build:
     name: analyze with sonarcloud
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Set up JDK 11
         uses: actions/setup-java@v1
@@ -40,5 +40,5 @@ jobs:
         shell: powershell
         run: |
           .\.sonar\scanner\dotnet-sonarscanner begin /k:"RicardoDuinkerken_Kwetter_Backend" /o:"ricardoduinkerken" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
-          dotnet build --no-restore ./AuthenticationService
+          dotnet build ./AuthenticationService
           .\.sonar\scanner\dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
